@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Audio Transcriber</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f5f5f5;
+                margin: 0;
+                padding: 20px
+            } 
+
+            h1 {
+                color: #333;
+                text-align: center;
+            }
+
+            .container {
+                max-width: 500px;
+                margin: 0 auto;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                padding: 20px;
+            }
+
+            .error {
+                color: red;
+                font-weight: bold;
+            }
+
+            .transciption {
+                margin-top: 20px;
+            }
+
+            .transciption h3 {
+                color: #333;
+            }
+
+            .transciption p {
+                margin: 0;
+                font-size: 16px;
+                line-height: 1.4;
+            }
+
+            .file-upload {
+                margin-bottom: 20px;
+            }
+
+            .file-upload input[type="file"] {
+                display: none;
+            }
+
+            .file-upload .btn-upload {
+                padding: 8px 16px;
+                background-color: #4CAF50;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s ease;
+            }
+
+            .file-upload .btn-upload:hover {
+                background-color: #45a049;
+            }
+
+            .file-upload .file-name {
+                margin-top: 10px;
+            } 
+        </style>
+        <script>
+            function showFileName() {
+                var fileInput = document.getElementById("audio_file"); 
+                var fileNameDiv = document.getElementById("file-name-div");
+
+                if (fileInput.files.length > 0) {
+                    fileNameDiv.style.display = "block";
+                    fileNameDiv.innerText = fileInput.files[0].name;
+                }
+                else {
+                    fileNameDiv.style.display = "none";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Audio Transciber</h1>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            {% if transcription %}
+                <div class="transcription">
+                    <h3>Transcription:</h3>
+                    <p> {{ transcription }} </p>
+                </div>
+            {% endif %}
+            <br>
+            <form method="post" enctype="multipart/form-data" action="/transcribe" class = "file-upload">
+                <div>
+                    <input type="file" name="audio_file" id="audio_file" accept="audio/*" required onchange="showFileName()">
+                    <label for="audio_file" class="btn-upload">Select File</label>
+                </div>
+                <div id="file-name-div" class="file-name"></div>
+                <br>
+                <input type="submit" value="Transcribe">
+            </form>
+        </div>
+    </body>
+</html>
